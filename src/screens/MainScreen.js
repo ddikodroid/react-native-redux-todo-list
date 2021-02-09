@@ -1,37 +1,45 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, SafeAreaView, FlatList } from 'react-native'
-import { InputField, Button, TodoCard } from '../components'
 import { COLOR } from '../styles/Color'
 import { FONT } from '../styles/Dimension'
-import { useDispatch, useSelector } from 'react-redux'
+import { addTodo } from '../redux/actions/todoAction'
+import { useSelector, useDispatch } from 'react-redux'
+import { InputField, Button, TodoCard } from '../components'
+import { StyleSheet, Text, SafeAreaView, Alert, FlatList } from 'react-native'
 
 const MainScreen = () => {
+  const [todoText, setTodoText] = useState('')
+
+  const todoList = useSelector(state => state.todoReducer.todoList)
   const dispatch = useDispatch()
-  const todos = useSelector(state => state.todos)
-  const [newTodo, setNewTodo] = useState()
-  const handleSubmit = () => dispatch({
-    type: 'ADD_TODO',
-    payload: {
-      label: newTodo,
-      id: Math.ceil(Math.random() * 27)
-    }
-  })
+
+  const handleAddTodo = () => {
+    todoText.length > 0
+      ? dispatch(addTodo(todoText))
+      : Alert.alert('No text entered...')
+  }
+  console.log(todoText)
+  console.log(todoList)
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.titleText}>Today's Task</Text>
-      <InputField value={newTodo} onChangeText={(text) => setNewTodo(text)} />
-      <Button text='Add Task' onPress={handleSubmit} />
+      <InputField
+        placeholder='Write a task here...'
+        value={todoText}
+        onChangeText={(text) => setTodoText(text)}
+      />
+      <Button text='Add Task' onPress={() => handleAddTodo()} />
       <FlatList
-        data={todos} renderItems={
-        ({ todo }) => <TodoCard task={todo} />
-
-      }
+        data={todoList}
+        keyExtractor={({ id }) => id.toString()}
+        renderItem={({ item }) => {
+          return (
+            <TodoCard data={item} />
+          )
+        }}
       />
     </SafeAreaView>
   )
 }
-
-export default MainScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -43,3 +51,5 @@ const styles = StyleSheet.create({
     color: COLOR.black
   }
 })
+
+export default MainScreen
