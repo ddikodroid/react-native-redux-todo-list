@@ -1,9 +1,9 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
 import { WIDTH } from '../styles/Dimension'
+import { TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-const SmallButton = ({ style, name, onPress, color }) => {
+const IconButton = ({ style, name, onPress, color }) => {
   return (
     <TouchableOpacity
       style={style}
@@ -12,10 +12,10 @@ const SmallButton = ({ style, name, onPress, color }) => {
       <Ionicons
         name={name}
         color={color}
-        size={WIDTH * 0.065}
+        size={WIDTH * 0.075}
       />
     </TouchableOpacity>
   )
 }
 
-export default SmallButton
+export default IconButton
