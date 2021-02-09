@@ -13,9 +13,12 @@ const MainScreen = () => {
   const dispatch = useDispatch()
 
   const handleAddTodo = () => {
-    todoText.length > 0
-      ? dispatch(addTodo(todoText))
-      : Alert.alert('No text entered...')
+    if (todoText.length > 0) {
+      dispatch(addTodo(todoText))
+      setTodoText('')
+    } else {
+      Alert.alert('No text entered...')
+    }
   }
   return (
     <SafeAreaView style={styles.container}>
