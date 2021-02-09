@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { StyleSheet, TextInput, Platform, View, Text } from 'react-native'
-import { WIDTH, HEIGHT, FONT } from '../styles/Dimension'
 import { COLOR } from '../styles/Color'
+import { WIDTH, HEIGHT, FONT } from '../styles/Dimension'
+import { StyleSheet, TextInput, Platform, View, Text } from 'react-native'
 
 const InputField = (props) => {
   const [onFocus, setOnFocus] = useState(false)
@@ -24,7 +24,9 @@ const InputField = (props) => {
         style={{
           ...FONT.placeholder,
           ...styles.input,
-          borderColor: onFocus ? COLOR.primary : COLOR.secondary,
+          borderColor: onFocus
+            ? COLOR.primary
+            : COLOR.secondary,
           height: !props.multiline
             ? HEIGHT * 0.055
             : Platform.OS === 'ios'
@@ -34,7 +36,8 @@ const InputField = (props) => {
         placeholder={props.placeholder}
         placeholderTextColor={COLOR.secondary}
         underlineColorAndroid='transparent'
-        onContentSizeChange={(e) => setHeight(e.nativeEvent.contentSize.height)}
+        onContentSizeChange={(e) =>
+          setHeight(e.nativeEvent.contentSize.height)}
         {...props}
       />
     </View>
@@ -53,6 +56,8 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderRadius: WIDTH * 0.02,
     backgroundColor: '#fafafa',
-    paddingBottom: Platform.OS === 'android' ? HEIGHT * 0.007 : HEIGHT * 0.012
+    paddingBottom: Platform.OS === 'android'
+      ? HEIGHT * 0.007
+      : HEIGHT * 0.012
   }
 })
