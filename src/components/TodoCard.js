@@ -1,27 +1,55 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import SmallButton from './SmallButton'
-import { WIDTH, HEIGHT, FONT } from '../styles/Dimension'
+import React from 'react'
+import SmallButton from './IconButton'
 import { COLOR } from '../styles/Color'
+import { useDispatch } from 'react-redux'
+import { StyleSheet, Text, View } from 'react-native'
+import { WIDTH, HEIGHT, FONT } from '../styles/Dimension'
+import { deleteTodo, completeTodo } from '../redux/actions/todoAction'
 
-const TodoCard = (props) => {
-  const [isCompleted, setIsCompleted] = useState(false)
-  const handleIsCompleted = () => {
-    setIsCompleted(!isCompleted)
-  }
+const TodoCard = ({ data }) => {
+  const dispatch = useDispatch()
+  const { id, task, completed } = data
+  const onDeleteTodo = (todoId) => dispatch(deleteTodo(todoId))
+  const onCompleteTodo = (todoId) => dispatch(completeTodo(todoId))
   return (
-    <View style={{ ...styles.taskContainer, borderColor: isCompleted ? COLOR.secondary : COLOR.primary }}>
-      <View style={{ flexDirection: 'row', marginRight: 5 }}>
-        <SmallButton name='checkmark-circle' color={isCompleted ? COLOR.primary : COLOR.grayish} onPress={handleIsCompleted} />
-      </View>
+    <View style={{
+      ...styles.taskContainer,
+      borderColor: completed ? COLOR.secondary : COLOR.primary
+    }}
+    >
       <View style={{
-        maxWidth: '90%'
+        flexDirection: 'row',
+        marginRight: 5
       }}
       >
-        <Text style={{ ...styles.textDefault, textDecorationLine: isCompleted ? 'line-through' : null }}>{props.task}</Text>
+        <SmallButton
+          name='checkmark-circle'
+          color={completed ? COLOR.primary : COLOR.grayish}
+          onPress={() => onCompleteTodo(id)}
+        />
       </View>
-      <View style={{ flexDirection: 'row-reverse', marginRight: 5 }}>
-        <SmallButton name='close-circle' color={COLOR.red} onPress={props.onPressDelete} />
+      <View style={{
+        maxWidth: '70%'
+      }}
+      >
+        <Text style={{
+          ...styles.textDefault,
+          textDecorationLine: completed ? 'line-through' : null
+        }}
+        >
+          {task}
+        </Text>
+      </View>
+      <View style={{
+        flexDirection: 'row-reverse',
+        marginRight: 5
+      }}
+      >
+        <SmallButton
+          name='close-circle'
+          color={COLOR.red}
+          onPress={() => onDeleteTodo(id)}
+        />
       </View>
     </View>
   )
@@ -43,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   textDefault: {
-    ...FONT.body3,
+    ...FONT.body2,
     color: COLOR.black,
     textDecorationLine: null
   }
