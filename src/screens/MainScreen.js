@@ -17,8 +17,6 @@ const MainScreen = () => {
       ? dispatch(addTodo(todoText))
       : Alert.alert('No text entered...')
   }
-  console.log(todoText)
-  console.log(todoList)
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.titleText}>Today's Task</Text>
